@@ -1,2 +1,6 @@
 .venv/
 .idea/
+__pycache__/
+*.m3u
+*.m3u8
+*.pls
