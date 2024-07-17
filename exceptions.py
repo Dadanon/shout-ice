@@ -4,3 +4,7 @@ class PlaylistExtensionError(Exception):
 
 class DirectiveError(Exception):
     pass
+
+
+class OPMLVersionError(Exception):
+    pass

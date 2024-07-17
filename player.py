@@ -4,7 +4,7 @@ from typing import List
 import vlc
 import os
 
-from general import get_extension_callable, PlaylistRecord
+from general import get_extension, PlaylistRecord, get_opml_list, get_m3u_list, get_pls_list, OPMLRecord
 
 os.add_dll_directory(r'C:\Program Files\VideoLAN\VLC')
 
@@ -39,9 +39,15 @@ class InternetPlayer:
             print("Воспроизведение остановлено пользователем.")
 
     @staticmethod
-    def get_playlist(playlist_path: str) -> List[PlaylistRecord]:
-        playlist_function = get_extension_callable(playlist_path)
-        return playlist_function(playlist_path)
+    def get_playlist(playlist_path: str) -> List[PlaylistRecord | OPMLRecord]:
+        playlist_extension: str = get_extension(playlist_path)
+        match playlist_extension:
+            case '.m3u' | '.m3u8':
+                return get_m3u_list(playlist_path)
+            case '.pls':
+                return get_pls_list(playlist_path)
+            case '.opml':
+                return get_opml_list(playlist_path)
 
 
 def test_get_web_stations_from_m3u(m3u_path: str):
@@ -56,5 +62,5 @@ def test_set_web_station(station: str):
     player.set_web_station(station)
 
 
-test_get_web_stations_from_m3u("test.pls")
+test_get_web_stations_from_m3u("test.opml")
 # test_set_web_station("https://e20.yesstreaming.net:8279")
